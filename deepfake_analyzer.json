@@ -1,0 +1,239 @@
+{
+  "name": "deepfake analyzer",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "5581a697-fa90-488e-bba5-784e53ca0c73",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        -40
+      ],
+      "id": "90a26db7-b90e-446a-8442-fe1b3f58a22b",
+      "name": "Webhook",
+      "webhookId": "5581a697-fa90-488e-bba5-784e53ca0c73"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        100,
+        160
+      ],
+      "id": "d1ad6d40-0a7c-4bcf-b208-ac79dcf0772d",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "IRCjAExLmvJwTRTT",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        400,
+        -40
+      ],
+      "id": "e9f94e3c-e4f1-45f6-8fed-cfb0d87df7bf",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        620,
+        -40
+      ],
+      "id": "8504f241-4cd1-4716-8a1c-d8a3581ef691",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        620,
+        200
+      ],
+      "id": "911796da-22ef-470e-99a6-0b3618603054",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "GTZyHmLbVRKRmMRD",
+          "name": "OpenAi account - lhart"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        980,
+        -40
+      ],
+      "id": "dfc6fe6a-63f9-4351-b78a-c74467259995",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        -240
+      ],
+      "id": "dd5ecd59-d82a-45ff-a4ed-032570a0fbcd",
+      "name": "DeepFake Analyzer 1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        -40
+      ],
+      "id": "1267bfc0-a9fc-489b-bcdf-1e50abead9f6",
+      "name": "Deepfake Analyzer 2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "DeepFake Analyzer 1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Deepfake Analyzer 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepFake Analyzer 1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deepfake Analyzer 2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "95142903-782a-4f60-84cd-b2f91bb1b73a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3a84f65525491143cffe10e05cda19fd7dde9a10ddbec08155c0ff031eb4e711"
+  },
+  "id": "tixKQQNcBdFv3PAV",
+  "tags": []
+}
