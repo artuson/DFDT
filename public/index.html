@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deepfake Detection Tool</title>
+    <script src="validation.js" defer></script>
 </head>
 <body>
     <div style="text-align: center;">
         <h1>Deepfake Detection Tool</h1>
         <div>
-            <input type="text" placeholder="Enter image URL" id="image-url">
+            <input type="file" accept="image/*" id="image-upload">
             <button id="run-test">Run Test</button>
+        </div>
+        <!-- Added a response area for n8n's response -->
+        <div id="response-container" style="margin-top: 20px; text-align: center; font-size: 1.2em; color: #333;">
+            <!-- Response from n8n will be displayed here -->
         </div>
     </div>
 </body>
