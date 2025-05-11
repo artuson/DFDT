@@ -1,15 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
     const imageUpload = document.getElementById('image-upload');
     const runTestButton = document.getElementById('run-test');
-    const resetFormButton = document.getElementById('reset-form'); // Reference to Reset Form Button
-    const responseContainer = document.getElementById('response-container'); // Reference to the results container
+    const resetFormButton = document.getElementById('reset-form');
+    const responseContainer = document.getElementById('response-container');
     const errorMessage = document.getElementById('error-message');
     const errorText = document.getElementById('error-text');
-    const overallJudgement = document.getElementById('overall-judgement').parentElement;
-    const modelTest1 = document.getElementById('model-test-1').parentElement;
-    const modelTest2 = document.getElementById('model-test-2').parentElement;
-    const modelTest3 = document.getElementById('model-test-3').parentElement;
-    const imageMetadata = document.getElementById('image-metadata').parentElement;
+    const overallJudgement = document.getElementById('overall-judgement');
+    const modelTest1 = document.getElementById('model-test-1');
+    const modelTest2 = document.getElementById('model-test-2');
+    const modelTest3 = document.getElementById('model-test-3');
+    const imageMetadata = document.getElementById('image-metadata');
+
+    // Debugging logs
+    console.log('Elements:', {
+        imageUpload,
+        runTestButton,
+        resetFormButton,
+        responseContainer,
+        errorMessage,
+        errorText,
+        overallJudgement,
+        modelTest1,
+        modelTest2,
+        modelTest3,
+        imageMetadata,
+    });
+
+    // Check if any element is null
+    if (!imageUpload || !runTestButton || !resetFormButton || !responseContainer || !errorMessage || !errorText || !overallJudgement || !modelTest1 || !modelTest2 || !modelTest3 || !imageMetadata) {
+        console.error('One or more elements are missing in the DOM. Please check the HTML.');
+        return;
+    }
 
     // Hide the results container and error message initially
     responseContainer.style.display = 'none';
@@ -64,6 +85,7 @@ Resolution: ${resolution.width} x ${resolution.height}
 
             if (response.ok) {
                 const responseData = await response.json(); // Expecting JSON response from n8n
+                console.log('Response Data:', responseData); // Debugging log
 
                 // Hide the error message
                 errorMessage.style.display = 'none';
@@ -76,21 +98,21 @@ Resolution: ${resolution.width} x ${resolution.height}
                 imageMetadata.style.display = 'block';
 
                 // Update the results display
-                document.getElementById('overall-judgement').textContent = responseData.overallJudgement || 'No Data Received';
-                document.getElementById('model-test-1').textContent = responseData.modelTest1 || 'No Data Received';
-                document.getElementById('model-test-2').textContent = responseData.modelTest2 || 'No Data Received';
-                document.getElementById('model-test-3').textContent = responseData.modelTest3 || 'No Data Received';
+                updateResult(overallJudgement, responseData.overallJudgement);
+                updateResult(modelTest1, responseData.modelTest1);
+                updateResult(modelTest2, responseData.modelTest2);
+                updateResult(modelTest3, responseData.modelTest3);
 
                 // Format and display metadata
                 if (responseData.imageMetadata) {
                     const metadata = responseData.imageMetadata;
-                    document.getElementById('image-metadata').textContent = `
+                    imageMetadata.textContent = `
 File Size: ${metadata.fileSize || 'N/A'}
 File Type: ${metadata.fileType || 'N/A'}
 Resolution: ${metadata.resolution || 'N/A'}
                     `;
                 } else {
-                    document.getElementById('image-metadata').textContent = 'No Data Received';
+                    imageMetadata.textContent = 'No Data Received';
                 }
 
                 // Show the results container
@@ -110,11 +132,11 @@ Resolution: ${metadata.resolution || 'N/A'}
         imageUpload.value = '';
 
         // Reset all result fields to their initial state
-        document.getElementById('overall-judgement').textContent = 'No Data Received';
-        document.getElementById('model-test-1').textContent = 'No Data Received';
-        document.getElementById('model-test-2').textContent = 'No Data Received';
-        document.getElementById('model-test-3').textContent = 'No Data Received';
-        document.getElementById('image-metadata').textContent = 'No Data Received';
+        overallJudgement.textContent = 'No Data Received';
+        modelTest1.textContent = 'No Data Received';
+        modelTest2.textContent = 'No Data Received';
+        modelTest3.textContent = 'No Data Received';
+        imageMetadata.textContent = 'No Data Received';
 
         // Hide the results container and error message
         responseContainer.style.display = 'none';
