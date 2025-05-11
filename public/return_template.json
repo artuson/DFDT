@@ -1,0 +1,23 @@
+{
+    "overallJudgement": {
+        "result": "Pass, Fail, or Inconclusive",
+        "explanation": "Brief explanation goes here."
+    },
+    "modelTest1": {
+        "result": "Fail",
+        "explanation": "The image failed the first model test due to inconsistencies."
+    },
+    "modelTest2": {
+        "result": "Pass",
+        "explanation": "The image passed the second model test."
+    },
+    "modelTest3": {
+        "result": "Fail",
+        "explanation": "The image failed the third model test due to artifacts."
+    },
+    "imageMetadata": {
+        "fileSize": "512 KB",
+        "fileType": "image/jpeg",
+        "resolution": "1920 x 1080"
+    }
+}
